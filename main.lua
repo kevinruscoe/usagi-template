@@ -1,3 +1,5 @@
+local SceneManager = require("managers.scene_manager")
+
 function _config()
   ---@type Usagi.Config
   return { name = "Game", game_id = "com.usagiengine.YOURGAMENAME" }
@@ -8,12 +10,23 @@ function _init()
   -- Stash mutable game state in a capitalized global like `State` so it
   -- survives reloads; F5 calls _init again to reset.
   State = {}
+
+  State.scene_manager = SceneManager()
+
+  State.scene_manager:addScene(
+    "HelloWorldScene",
+    require("scenes.hello_world_scene"):new()
+  )
+
+  State.scene_manager:switchScene("HelloWorldScene")
 end
 
 function _update(dt)
+  State.scene_manager:update(dt)
 end
 
 function _draw(dt)
   gfx.clear(gfx.COLOR_BLACK)
-  gfx.text("Hello, Usagi!", 10, 10, gfx.COLOR_WHITE)
+
+  State.scene_manager:draw()
 end
