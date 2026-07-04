@@ -1,13 +1,29 @@
 local class = require("libs.30log")
 
 local SceneManager = class("SceneManager")
+local instance = SceneManager()
 
+function SceneManager.new()
+  error("Cannot instantiate from a Singleton class")
+end
 
-function SceneManager:init()
+function SceneManager.init(self)
   self.scenes = {}
 end
 
+function SceneManager.extend()
+  error("Cannot extend from a Singleton class")
+end
+
+function SceneManager:getInstance()
+  return instance
+end
+
 function SceneManager:addScene(sceneName, scene)
+  if not self.scenes then
+    self.scenes = {}
+  end
+
   table.insert(self.scenes, { name = sceneName, scene = scene })
 end
 
